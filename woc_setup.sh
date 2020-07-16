@@ -3,10 +3,24 @@
 
 clear
 
-echo "WARNING! - running this script after initial setup will overrite previously stored values"
-echo "To prevent this, 'ctrl-c' out now! - otherwise [Enter] to continue if you intend to reset the woc parameters"
+ls ~/ | grep load_var
+firstTime=($?)
 
-read enter
+if [[ $firstTime -eq 1 ]]; then
+    echo "It looks like this is the first running this script, press enter to continue"
+    read enter
+else
+    echo "WARNING! - running this script after initial setup will overrite previously stored values"
+    echo "To prevent this, 'ctrl-c' out now! - otherwise [Enter] to continue if you intend to reset the woc parameters"
+    echo " -----------------------------------------------------------------------------"
+    echo "do you want to continue?"
+    read firstTimeAns
+    if [[ $firstTimeAns != "y" ]]; then
+        exit
+    fi
+fi
+
+clear
 
 echo "Welcome to the Wireless Offload Concentrator / Tunneling Router setup!"
 echo "There are 2 numbered interfaces, and 2 unnumbered interfaces needed for the WOC to properly function."
@@ -15,12 +29,10 @@ echo "ens192 - Dual stack interface and GREv6 source address of tunnel to the WA
 echo "ens224 - Unnumbered interface that faces the internal LAN segments "
 echo "ens256 - Failover cross connect 1 - must be connected to the partner WOC. - heartbeat send"
 echo "ens161 - Failover cross connect 2 - must be connected to the partner WOC. - heartbeat receive"
-
+echo " -----------------------------------------------------------------------------"
 echo "Are the aforementioned interfaces present and linked appropriately? (y/n)"
 
 read setupIntAns
-echo $setupIntAns
-
 if [ "$setupIntAns" == "y" ]
 then
     rm -rf load_var.txt
@@ -48,7 +60,7 @@ then
 
         echo "If at any time you need to change these variables re-run the setup script!"
         echo "the WOC will now reboot to apply the new settings"
-        reboot 10
+        #reboot 10
         exit
         else
             echo "please correct any misconfigured interfaces / links and restart the setup script"
