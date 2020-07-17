@@ -71,4 +71,44 @@ else
         echo "please correct any misconfigured interfaces / links and restart the setup script"
         exit
 fi
+clear
+echo "Checking status of woc service"
+
+ls /etc/systemd/system/ | grep woc.service
+serviceFile=($?)
+if [[ serviceFile -eq 0 ]]; then
+    echo "service loaded............"
+    systemctl status woc.service
+    echo "checking status of woc service....."
+    sleep 1
+    systemctl status woc.service | grep enabled
+    serviceEnabled=($?)
+    if [[ serviceEnabled -eq 0 ]]; then
+        echo "the woc service is enabled....."
+        exit
+    fi
+else
+    echo "service not loaded, load now? (y/n)"
+    read loadService
+    if [[ loadService != "y" ]]; then
+        echo "no service loaded, exiting"
+        exit
+    else
+        echo "loading service"
+        cp ~/woc.service /etc/systemd/system/
+        chmod +x /etc/systemd/system/woc.service
+        sleep 2
+        echo "serice loaded, would you also like to enable the service? (y/n)"
+        read enableService
+        if [[ enableService != "y" ]]; then
+            "service not enabled, the woc will not survive a reboot of the unit."
+            exit
+        else
+            echo "enabling woc service"
+            systemctl enable woc.service
+            sleep 2
+            echo "woc service enabled"
+        fi
+    fi
+fi
 exit
