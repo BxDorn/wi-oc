@@ -1,0 +1,8 @@
+[Unit]
+Description=build_bridge
+
+[Service]
+ExecStart=/root/woc/wifi-offload-concentrator.sh
+
+[Install]
+WantedBy=default.target
