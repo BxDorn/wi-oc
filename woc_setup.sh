@@ -3,7 +3,7 @@
 
 clear
 
-ls ~/ | grep load_var
+ls | grep load_var.txt
 firstTime=($?)
 
 if [[ $firstTime -eq 1 ]]; then
@@ -61,7 +61,6 @@ then
         echo "If at any time you need to change these variables re-run the setup script!"
         echo "the WOC will now reboot to apply the new settings"
         #reboot 10
-        exit
         else
             echo "please correct any misconfigured interfaces / links and restart the setup script"
                 exit
@@ -72,25 +71,30 @@ else
         exit
 fi
 clear
-echo "Checking status of woc service"
+echo "Checking for presence of woc service file"
 
 ls /etc/systemd/system/ | grep woc.service
 serviceFile=($?)
-if [[ serviceFile -eq 0 ]]; then
+
+if [[ $serviceFile -eq "0" ]]; then
     echo "service loaded............"
-    systemctl status woc.service
     echo "checking status of woc service....."
     sleep 1
+
     systemctl status woc.service | grep enabled
     serviceEnabled=($?)
-    if [[ serviceEnabled -eq 0 ]]; then
+
+    if [[ $serviceEnabled -eq "0" ]]; then
         echo "the woc service is enabled....."
-        exit
+     	sleep 5
+	exit
+    else
+	clear
     fi
 else
     echo "service not loaded, load now? (y/n)"
     read loadService
-    if [[ loadService != "y" ]]; then
+    if [[ $loadService != "y" ]]; then
         echo "no service loaded, exiting"
         exit
     else
@@ -100,7 +104,7 @@ else
         sleep 2
         echo "serice loaded, would you also like to enable the service? (y/n)"
         read enableService
-        if [[ enableService != "y" ]]; then
+        if [[ $enableService != "y" ]]; then
             "service not enabled, the woc will not survive a reboot of the unit."
             exit
         else
