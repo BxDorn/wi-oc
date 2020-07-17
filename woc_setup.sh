@@ -78,19 +78,6 @@ serviceFile=($?)
 
 if [[ $serviceFile -eq "0" ]]; then
     echo "service loaded............"
-    echo "checking status of woc service....."
-    sleep 1
-
-    systemctl status woc.service | grep enabled
-    serviceEnabled=($?)
-
-    if [[ $serviceEnabled -eq "0" ]]; then
-        echo "the woc service is enabled....."
-     	sleep 5
-	exit
-    else
-	clear
-    fi
 else
     echo "service not loaded, load now? (y/n)"
     read loadService
