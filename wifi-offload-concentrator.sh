@@ -2,10 +2,17 @@
 
 
 #Declarations
-log=~/woc_log.txt
+log=~/log_woc.txt
 now=$(date)
 i=0
 j=0
+
+ls | grep load_var.txt
+loadVarPresent=($?)
+if [[ $loadVarPresent -eq 1 ]]; then
+  echo $(date) "no GRE endpoint configured, please run setup!"
+  exit
+fi
 
 #pull the IPv6 address from the 
 ipv6_wan=$(ip -6 addr show ens192 scope global | egrep -v dynamic | awk '$1 == "inet6" {print $2}' | awk '{print substr($1, 1, length($1)-3)}')
