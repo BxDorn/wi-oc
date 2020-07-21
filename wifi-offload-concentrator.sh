@@ -70,6 +70,7 @@ while [ $i -le 5 ]
          echo This unit is in standby mode
          echo Heartbeat Successful - i = $i -----
          echo --------------------------------------
+         echo "Standby" > woc_status.woc
          sleep 5
          i=0
       else
@@ -98,7 +99,7 @@ echo $i unsuccessful attempts to through primary WOC. >> $log
 echo Master Down - This unit is now primary $date >> $log
 echo $i unsuccessful attempts to through primary WOC.
 echo Master Down - This unit is now primary $date
-echo oPrimary >> load_var.woc
+echo "Primary" > woc_status.woc
 
 #enable the bridge to usurp the failed unit.
 #ip link set ens224 up
@@ -120,7 +121,7 @@ while [ $j -le 1 ]
           echo Some other device on the network segment is providing DHCP service, perhaps the partner WOC?
         else
           j=0
-          echo "this unit is primary"
+          echo "Primary" > woc_status.woc
       fi
   done
 
