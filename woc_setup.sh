@@ -122,7 +122,7 @@ then
         echo "If at any time you need to change these variables re-run the setup script!"
         echo "Press Enter to reboot to apply the new settings"
         read pressEnter
-        #reboot 10
+        reboot
         else
             echo "please correct any misconfigured interfaces / links and restart the setup script"
                 exit
