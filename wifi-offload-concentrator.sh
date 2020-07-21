@@ -43,6 +43,8 @@ set -x
 # bridge link set dev ens224 guard on
 set +x
 
+firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
+
 ## establish counter for HA retries - after 5 attempts the script will trigger a failover.
 while [ $i -le 5 ]
   do
