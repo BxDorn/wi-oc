@@ -1,5 +1,6 @@
 [Unit]
 Description=wifi-offload-concentrator
+After=network-online.target
 
 [Service]
 ExecStart=/root/wi-oc/wifi-offload-concentrator.sh
