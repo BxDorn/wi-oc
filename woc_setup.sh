@@ -79,10 +79,42 @@ then
         echo "The WAG IPv6 endpoint is:"
         echo "$wagIpv6"
         echo "-------------------------------------------------------------------------"
+        cp ifcfg-bond0 /etc/sysconfig/network-scripts/
 
 
+        clear
+        echo "Checking for presence of woc service file"
 
+        ls /etc/systemd/system/ | grep woc.service
+        serviceFile=($?)
 
+        if [[ $serviceFile -eq "0" ]]; then
+            echo "service file present"
+        else
+            echo "service file not round, load now? (y/n)"
+            read loadService
+            if [[ $loadService != "y" ]]; then
+                echo "no service loaded, exiting"
+                exit
+            else
+                echo "loading service"
+                cp ~/woc.service /etc/systemd/system/
+                chmod +x /etc/systemd/system/woc.service
+                sleep 2
+            fi
+        fi
+
+        echo "serice file loaded, would you also like to enable the service? (y/n)"
+        read enableService
+        if [[ $enableService != "y" ]]; then
+            "service not enabled, the woc will not survive a reboot of the unit."
+            exit
+        else
+            echo "enabling woc service"
+            systemctl enable woc.service
+            sleep 2
+            echo "woc service enabled"
+        fi
         echo "If at any time you need to change these variables re-run the setup script!"
         echo "Press Enter to reboot to apply the new settings"
         read pressEnter
