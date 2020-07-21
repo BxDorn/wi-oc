@@ -3,7 +3,7 @@
 
 clear
 
-ls | grep load_var.txt
+ls | grep load_var.woc
 firstTime=($?)
 
 if [[ $firstTime -eq 1 ]]; then
@@ -36,7 +36,7 @@ echo "Are the aforementioned interfaces present and linked appropriately? (y/n)"
 read setupIntAns
 if [ "$setupIntAns" == "y" ]
 then
-    rm -rf load_var.txt
+    rm -rf load_var.woc
     rm -rf /etc/sysconfig/network-scripts/ifcfg-bond0
     rm -rf ifcfg-bond0
 
@@ -69,7 +69,7 @@ then
         then
             echo "Please enter the WAG IPv6 endpoint address"
             read wagIpv6
-            echo $wagIpv6 >> load_var.txt
+            echo $wagIpv6 >> load_var.woc
         clear
         echo "The following parameters have been configured:"
         ipv6_wan=$(ip -6 addr show ens192 scope global | egrep -v dynamic | awk '$1 == "inet6" {print $2}' | awk '{print substr($1, 1, length($1)-3)}')
@@ -81,7 +81,7 @@ then
         echo "$wagIpv6"
         echo "-------------------------------------------------------------------------"
         cp ifcfg-bond0 /etc/sysconfig/network-scripts/
-
+        echo "Primary" >> load_var.woc
 
         clear
         echo "Checking for presence of woc service file"
