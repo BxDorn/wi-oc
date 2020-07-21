@@ -39,7 +39,7 @@ then
     rm -rf load_var.txt
     rm -rf /etc/sysconfig/network-scripts/ifcfg-bond0
     rm -rf ifcfg-bond0
-    
+
     echo "DEVICE=bond0" >> ifcfg-bond0
     echo "TYPE=Bond"  >> ifcfg-bond0
     echo "NAME=bond0"  >> ifcfg-bond0
@@ -99,13 +99,16 @@ then
                 exit
             else
                 echo "loading service"
-                cp ~/woc.service /etc/systemd/system/
+                cp woc.service /etc/systemd/system/
                 chmod +x /etc/systemd/system/woc.service
-                sleep 2
+                cpStatus=($?)
+                if [[ $cpStatus -eq 0 ]]; then
+                    echo "serice file loaded!"
+                fi
             fi
         fi
 
-        echo "serice file loaded, would you also like to enable the service? (y/n)"
+        echo "Would you like to enable the service? (y/n)"
         read enableService
         if [[ $enableService != "y" ]]; then
             "service not enabled, the woc will not survive a reboot of the unit."
