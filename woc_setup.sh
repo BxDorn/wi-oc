@@ -38,6 +38,7 @@ if [ "$setupIntAns" == "y" ]
 then
     rm -rf load_var.txt
     rm -rf /etc/sysconfig/network-scripts/ifcfg-bond0
+    rm -rf ifcfg-bond0
     
     echo "DEVICE=bond0" >> ifcfg-bond0
     echo "TYPE=Bond"  >> ifcfg-bond0
