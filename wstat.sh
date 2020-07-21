@@ -20,7 +20,7 @@ ip link show BNG1 | grep UP
 ip link show ens224 | grep UP
 
 
-trackedMac=(bridge fdb show | wc -l)
+trackedMac=$(bridge fdb show | wc -l)
 echo "total tracked MAC addresses = " $trackedMac
 echo ------------------------------------------------------
 
