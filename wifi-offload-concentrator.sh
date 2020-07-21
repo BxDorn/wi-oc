@@ -19,7 +19,7 @@ fi
 ipv6_wan=$(ip -6 addr show ens192 scope global | egrep -v dynamic | awk '$1 == "inet6" {print $2}' | awk '{print substr($1, 1, length($1)-3)}')
 
 #pull wag endpoint from load_var.woc in local dir.
-wagEndpt=$(sed -n '1{p;q;}' load_var.woc)
+wagEndpt=$(sed -n '1{p;q;}' /root/wi-oc/load_var.woc)
 
 # pre-build bridge function, disable bridge.
 set -x
