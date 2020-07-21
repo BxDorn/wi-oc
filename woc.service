@@ -1,5 +1,5 @@
 [Unit]
-Description=build_bridge
+Description=wifi-offload-concentrator
 
 [Service]
 ExecStart=/root/wi-oc/wifi-offload-concentrator.sh
