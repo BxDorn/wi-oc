@@ -37,7 +37,28 @@ read setupIntAns
 if [ "$setupIntAns" == "y" ]
 then
     rm -rf load_var.txt
+    rm -rf /etc/sysconfig/network-scripts/ifcfg-bond0
+    
+    echo "DEVICE=bond0" >> ifcfg-bond0
+    echo "TYPE=Bond"  >> ifcfg-bond0
+    echo "NAME=bond0"  >> ifcfg-bond0
+    echo "BONDING_MASTER=yes"  >> ifcfg-bond0
+    echo "BOOTPROTO=none"  >> ifcfg-bond0
+    echo "ONBOOT=yes"  >> ifcfg-bond0
+    echo "DEFROUTE=no"  >> ifcfg-bond0
+    echo "BONDING_OPTS="mode=5 miimon=100""  >> ifcfg-bond0
+    echo "is this unit the primary?"
+        read isPrimary
+            if [[ $isPrimary == "y" ]]; then
+            echo "MACADDR=6a:55:c7:e2:f9:51" >> ifcfg-bond0
+        else
+            touch 
+            echo "MACADDR=6a:55:c7:e2:f9:52" >> ifcfg-bond0
+        fi
 
+    echo "The folloing bond0 parameters will be used, Press Enter to continue"
+    more ifcfg-bond0
+    read pressEnter
     clear
     echo "Interface configuration accepted, here are your current interface parameters:"
     ip a
@@ -58,17 +79,13 @@ then
         echo "The WAG IPv6 endpoint is:"
         echo "$wagIpv6"
         echo "-------------------------------------------------------------------------"
-        echo "is this unit the primary?"
-        read isPrimary
-        if [[ $isPrimary == "y" ]]; then
-            echo "MACADDR=6a:55:c7:e2:f9:51" 
-        else
-            echo "MACADDR=6a:55:c7:e2:f9:52"
-        fi
+
+
 
 
         echo "If at any time you need to change these variables re-run the setup script!"
-        echo "the WOC will now reboot to apply the new settings"
+        echo "Press Enter to reboot to apply the new settings"
+        read pressEnter
         #reboot 10
         else
             echo "please correct any misconfigured interfaces / links and restart the setup script"
