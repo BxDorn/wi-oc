@@ -48,10 +48,11 @@ firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEP
 ## establish counter for HA retries - after 5 attempts the script will trigger a failover.
 while [ $i -le 5 ]
   do
-    dhclient -r ens256
-    dhclient ens256 -1 -timeout 5
+#    dhclient -r ens256
+#    dhclient ens256 -1 -timeout 5
+    ping 192.168.1.11 -c 1
     status=($?)
-    dhclient -r ens256
+#    dhclient -r ens256
     
 ## loop successful heartbeats
     if [ $status -eq 0 ]
