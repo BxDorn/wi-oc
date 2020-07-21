@@ -97,6 +97,7 @@ echo Master Down - This unit is now primary $date
 
 #enable the bridge to usurp the failed unit.
 ip link set ens224 up
+ip link set br0 up
 
 echo This WOC is primary - Monitoring status of backup $(date) >> $log
 echo This WOC is primary - Monitoring status of backup $(date)
@@ -114,6 +115,7 @@ while [ $j -le 1 ]
           echo Some other device on the network segment is providing DHCP service, perhaps the partner WOC?
         else
           j=0
+          echo "this unit is primary"
       fi
   done
 
