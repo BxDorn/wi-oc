@@ -7,7 +7,7 @@ now=$(date)
 i=0
 j=0
 
-ls /root/wi-oc/ | grep load_var.txt
+ls /root/wi-oc/ | grep load_var.woc
 loadVarPresent=($?)
 if [[ $loadVarPresent -eq 1 ]]; then
   echo $(date) "no GRE endpoint configured, please run setup!"
@@ -18,8 +18,8 @@ fi
 #pull the IPv6 address from the 
 ipv6_wan=$(ip -6 addr show ens192 scope global | egrep -v dynamic | awk '$1 == "inet6" {print $2}' | awk '{print substr($1, 1, length($1)-3)}')
 
-#pull wag endpoint from load_var.txt in local dir.
-wagEndpt=$(cat /root/wi-oc/load_var.txt)
+#pull wag endpoint from load_var.woc in local dir.
+wagEndpt=$(cat /root/wi-oc/load_var.woc)
 
 # pre-build bridge function, disable bridge.
 set -x
