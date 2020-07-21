@@ -27,8 +27,9 @@ echo "There are 2 numbered interfaces, and 2 unnumbered interfaces needed for th
 echo "The standard setup is as follows:"
 echo "ens192 - Dual stack interface and GREv6 source address of tunnel to the WAG for client traffic - this is the external interface"
 echo "ens224 - Unnumbered interface that faces the internal LAN segments "
-echo "ens256 - Failover cross connect 1 - must be connected to the partner WOC. - heartbeat send"
-echo "ens161 - Failover cross connect 2 - must be connected to the partner WOC. - heartbeat receive"
+echo "ens256 - Failover cross connect 1 - bond0 member"
+echo "ens161 - Failover cross connect 2 - bond0 member"
+echo "bond0  - Failover interface"
 echo " -----------------------------------------------------------------------------"
 echo "Are the aforementioned interfaces present and linked appropriately? (y/n)"
 
@@ -57,6 +58,14 @@ then
         echo "The WAG IPv6 endpoint is:"
         echo "$wagIpv6"
         echo "-------------------------------------------------------------------------"
+        echo "is this unit the primary?"
+        read isPrimary
+        if [[ $isPrimary == "y" ]]; then
+            echo "MACADDR=6a:55:c7:e2:f9:51" 
+        else
+            echo "MACADDR=6a:55:c7:e2:f9:52"
+        fi
+
 
         echo "If at any time you need to change these variables re-run the setup script!"
         echo "the WOC will now reboot to apply the new settings"
@@ -69,40 +78,5 @@ then
 else
         echo "please correct any misconfigured interfaces / links and restart the setup script"
         exit
-fi
-
-
-clear
-echo "Checking for presence of woc service file"
-
-ls /etc/systemd/system/ | grep woc.service
-serviceFile=($?)
-
-if [[ $serviceFile -eq "0" ]]; then
-    echo "service file present"
-else
-    echo "service not loaded, load now? (y/n)"
-    read loadService
-    if [[ $loadService != "y" ]]; then
-        echo "no service loaded, exiting"
-        exit
-    else
-        echo "loading service"
-        cp ~/woc.service /etc/systemd/system/
-        chmod +x /etc/systemd/system/woc.service
-        sleep 2
-    fi
-fi
-
-echo "serice file loaded, would you also like to enable the service? (y/n)"
-read enableService
-if [[ $enableService != "y" ]]; then
-    "service not enabled, the woc will not survive a reboot of the unit."
-    exit
-else
-    echo "enabling woc service"
-    systemctl enable woc.service
-    sleep 2
-    echo "woc service enabled"
 fi
 exit

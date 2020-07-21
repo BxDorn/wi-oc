@@ -14,6 +14,7 @@ if [[ $loadVarPresent -eq 1 ]]; then
   exit
 fi
 
+
 #pull the IPv6 address from the 
 ipv6_wan=$(ip -6 addr show ens192 scope global | egrep -v dynamic | awk '$1 == "inet6" {print $2}' | awk '{print substr($1, 1, length($1)-3)}')
 
@@ -38,7 +39,7 @@ set -x
   ip link set ens192 up
 
 # disable the bridge
-  ip link set ens224 down
+  ip link set br0 down
 
 # bridge link set dev ens224 guard on
 set +x
@@ -48,11 +49,14 @@ firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEP
 ## establish counter for HA retries - after 5 attempts the script will trigger a failover.
 while [ $i -le 5 ]
   do
-#    dhclient -r ens256
-#    dhclient ens256 -1 -timeout 5
-    ping 192.168.1.11 -c 1
+    dhclient -r bond0
+    dhclient bond0 -1 -timeout 5
+
+# Basic ping heartbeat - deprecated.
+#    ping 192.168.1.11 -c 1
+    
     status=($?)
-#    dhclient -r ens256
+    dhclient -r ens256
     
 ## loop successful heartbeats
     if [ $status -eq 0 ]
@@ -96,7 +100,7 @@ echo $i unsuccessful attempts to through primary WOC.
 echo Master Down - This unit is now primary $date
 
 #enable the bridge to usurp the failed unit.
-ip link set ens224 up
+#ip link set ens224 up
 ip link set br0 up
 
 echo This WOC is primary - Monitoring status of backup $(date) >> $log
