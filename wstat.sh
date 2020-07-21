@@ -1,16 +1,5 @@
 #!/bin/bash
 
-#gather status
-ip link show br0 | grep UP
-br0Status=($?)
-ip link show BNG1 | grep UP
-bng1Status=($?)
-ip link show ens224 | grep UP
-224Statu=($?)
-
-clear
-
-
 
 echo "WOC Status"
 echo ------------------------------------------------------
@@ -29,6 +18,9 @@ if [[ $isPrimary == "Primary"  ]]; then
 else
 	echo "Unit Operational State = Standby"
 fi
+ip link show br0 | grep UP
+ip link show BNG1 | grep UP
+ip link show ens224 | grep UP
 
 
 trackedMac=(bridge fdb show | wc -l)

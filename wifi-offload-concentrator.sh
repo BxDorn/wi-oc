@@ -98,6 +98,7 @@ echo $i unsuccessful attempts to through primary WOC. >> $log
 echo Master Down - This unit is now primary $date >> $log
 echo $i unsuccessful attempts to through primary WOC.
 echo Master Down - This unit is now primary $date
+echo oPrimary >> load_var.woc
 
 #enable the bridge to usurp the failed unit.
 #ip link set ens224 up
