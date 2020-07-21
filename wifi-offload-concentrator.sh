@@ -7,7 +7,7 @@ now=$(date)
 i=0
 j=0
 
-ls | grep load_var.txt
+ls /root/wi-oc/ | grep load_var.txt
 loadVarPresent=($?)
 if [[ $loadVarPresent -eq 1 ]]; then
   echo $(date) "no GRE endpoint configured, please run setup!"
