@@ -109,7 +109,7 @@ echo "Primary" > /root/wi-oc/woc_status.woc
 #enable the bridge to usurp the failed unit.
 #ip link set ens224 up
 ip link set br0 up
-systemctl stop firewalld.service
+#systemctl stop firewalld.service
 
 echo This WOC is primary - Monitoring status of backup $(date) >> $log
 echo This WOC is primary - Monitoring status of backup $(date)
