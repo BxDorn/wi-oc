@@ -109,8 +109,6 @@ echo "Primary" > woc_status.woc
 #ip link set ens224 up
 ip link set br0 up
 systemctl stop firewalld.service
-sleep 60
-systemctl start firewalld.service
 
 echo This WOC is primary - Monitoring status of backup $(date) >> $log
 echo This WOC is primary - Monitoring status of backup $(date)

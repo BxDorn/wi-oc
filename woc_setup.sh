@@ -118,22 +118,13 @@ then
             systemctl enable woc.service
             sleep 2
             echo "woc service enabled"
-            echo "adding firewall rules"
-            firewall-cmd --permanent --zone=trusted --add-source=$wagIpv6
-            firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
-            firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagIpv6 -j ACCEPT
-            sleep 2
-            echo "restarting firewall"
-            systemctl restart firewalld.service
-            sleep 7 &
-            PID=$!
-            i=1
-            sp="/-\|"
-            echo -n ' '
-            while [ -d /proc/$PID ]
-            do
-              printf "\b${sp:i++%${#sp}:1}"
-            done
+            #firewall-cmd --permanent --zone=trusted --add-source=$wagIpv6
+            #firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
+            #firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagIpv6 -j ACCEPT
+            #sleep 2
+            #echo "restarting firewall"
+            systemctl stop firewalld.service
+            systemctl disable firewalld.service
 
         fi
         echo "If at any time you need to change these variables re-run the setup script!"
