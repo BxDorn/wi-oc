@@ -2,7 +2,7 @@
 
 
 #Declarations
-log=log_woc.txt
+log=/root/wi-oc/log_woc.txt
 now=$(date)
 i=0
 j=0
