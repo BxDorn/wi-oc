@@ -44,9 +44,10 @@ set -x
 # bridge link set dev ens224 guard on
 set +x
 
+#moved to setup file
 #firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
 #firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagEndpt -j ACCEPT
-firewall-cmd --permanent --zone=trusted --add-source=2600:6ce6:4403::1
+
 
 
 ## establish counter for HA retries - after 5 attempts the script will trigger a failover.
@@ -108,7 +109,6 @@ echo "Primary" > woc_status.woc
 #ip link set ens224 up
 ip link set br0 up
 sleep 15
-systemctl restart firewalld.service
 
 echo This WOC is primary - Monitoring status of backup $(date) >> $log
 echo This WOC is primary - Monitoring status of backup $(date)

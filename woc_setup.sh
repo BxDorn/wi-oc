@@ -118,6 +118,12 @@ then
             systemctl enable woc.service
             sleep 2
             echo "woc service enabled"
+            echo "adding firewall rules"
+            firewall-cmd --permanent --zone=trusted --add-source=$wagIpv6
+            systemctl restart firewalld.service
+            sleep 10
+            echo "done!"
+
         fi
         echo "If at any time you need to change these variables re-run the setup script!"
         echo "Press Enter to reboot to apply the new settings"
@@ -131,5 +137,6 @@ then
 else
         echo "please correct any misconfigured interfaces / links and restart the setup script"
         exit
+
 fi
 exit
