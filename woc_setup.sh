@@ -120,6 +120,10 @@ then
             echo "woc service enabled"
             echo "adding firewall rules"
             firewall-cmd --permanent --zone=trusted --add-source=$wagIpv6
+            firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
+            firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagIpv6 -j ACCEPT
+            sleep 2
+            echo "restarting firewall"
             systemctl restart firewalld.service
             sleep 10
             echo "done!"
