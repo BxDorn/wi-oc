@@ -125,8 +125,15 @@ then
             sleep 2
             echo "restarting firewall"
             systemctl restart firewalld.service
-            sleep 10
-            echo "done!"
+            sleep 7 &
+            PID=$!
+            i=1
+            sp="/-\|"
+            echo -n ' '
+            while [ -d /proc/$PID ]
+            do
+              printf "\b${sp:i++%${#sp}:1}"
+            done
 
         fi
         echo "If at any time you need to change these variables re-run the setup script!"
