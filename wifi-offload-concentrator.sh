@@ -44,8 +44,9 @@ set -x
 # bridge link set dev ens224 guard on
 set +x
 
-firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
-firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagEndpt -j ACCEPT
+#firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
+#firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagEndpt -j ACCEPT
+firewall-cmd --permanent --zone=trusted --add-source=2600:6ce6:4403::1
 systemctl restart firewalld.service
 
 ## establish counter for HA retries - after 5 attempts the script will trigger a failover.
