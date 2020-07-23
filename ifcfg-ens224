@@ -1,0 +1,5 @@
+NAME="ens224"
+DEVICE="ens224"
+ONBOOT=yes
+NETBOOT=yes
+TYPE=Ethernet

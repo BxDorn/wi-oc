@@ -45,7 +45,7 @@ set -x
 # bridge link set dev ens224 guard on
 set +x
 
-#moved to setup file
+#moved to setup file - deprecated here
 #firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
 #firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagEndpt -j ACCEPT
 
@@ -54,8 +54,8 @@ set +x
 ## establish counter for HA retries - after 5 attempts the script will trigger a failover.
 while [ $i -le 5 ]
   do
-    dhclient -r bond0
-    dhclient bond0 -1 -timeout 5
+    dhclient -r ens256
+    dhclient ens256 -1 -timeout 5
 
 # Basic ping heartbeat - deprecated.
 #    ping 192.168.1.11 -c 1
@@ -134,7 +134,7 @@ while [ $j -le 1 ]
 echo "Partner unit has usurped as primary, rebooting this unit and entering standby"  >> $log
 echo "Partner unit has usurped as primary, rebooting this unit and entering standby"
 
-reboot now
+#reboot now
 
 exit
 

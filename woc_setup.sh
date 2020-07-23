@@ -3,6 +3,14 @@
 
 clear
 
+#grab interface mac addresses
+ens161Mac=$(ip -o link | awk '$2 == "ens161:" {print $(NF-2)}')
+ens256Mac=$(ip -o link | awk '$2 == "ens256:" {print $(NF-2)}')
+
+
+
+
+
 ls | grep load_var.woc
 firstTime=($?)
 
@@ -40,25 +48,46 @@ then
     rm -rf /etc/sysconfig/network-scripts/ifcfg-bond0
     rm -rf ifcfg-bond0
 
-    echo "DEVICE=bond0" >> ifcfg-bond0
-    echo "TYPE=Bond"  >> ifcfg-bond0
-    echo "NAME=bond0"  >> ifcfg-bond0
-    echo "BONDING_MASTER=yes"  >> ifcfg-bond0
-    echo "BOOTPROTO=none"  >> ifcfg-bond0
-    echo "ONBOOT=yes"  >> ifcfg-bond0
-    echo "DEFROUTE=no"  >> ifcfg-bond0
-    echo "BONDING_OPTS="mode=5 miimon=100""  >> ifcfg-bond0
+
+
+#deprecated bond config
+#    echo "DEVICE=bond0" >> ifcfg-bond0
+#    echo "TYPE=Bond"  >> ifcfg-bond0
+#    echo "NAME=bond0"  >> ifcfg-bond0
+#    echo "BONDING_MASTER=yes"  >> ifcfg-bond0
+#    echo "BOOTPROTO=none"  >> ifcfg-bond0
+#    echo "ONBOOT=yes"  >> ifcfg-bond0
+#    echo "DEFROUTE=no"  >> ifcfg-bond0
+#    echo "BONDING_OPTS="mode=5 miimon=100""  >> ifcfg-bond0
+
+
+#ip a | awk '/^[a-z]/ { iface=$1; mac=$NF; next }/inet addr:/ { print iface, mac }'
+
+
+
+
     echo "is this unit the primary?"
         read isPrimary
             if [[ $isPrimary == "y" ]]; then
-            echo "MACADDR=6a:55:c7:e2:f9:51" >> ifcfg-bond0
-        else
-            touch 
-            echo "MACADDR=6a:55:c7:e2:f9:52" >> ifcfg-bond0
-        fi
+ #               rm /etc/sysconfig/network-scripts/ifcfg-ens161
+ #               rm /etc/sysconfig/network-scripts/ifcfg-ens256
+ #               cp /root/wi-oc/ifcfg-ens161-p /etc/sysconfig/network-scripts/ifcfg-ens161
+ #               cp /root/wi-oc/ifcfg-ens161-p /etc/sysconfig/network-scripts/ifcfg-ens256
+ #               echo "Interfaces configured as primary unit"
+            else
+ #               rm /etc/sysconfig/network-scripts/ifcfg-ens161
+ #               rm /etc/sysconfig/network-scripts/ifcfg-ens256
+ #               cp /root/wi-oc/ifcfg-ens161-s /etc/sysconfig/network-scripts/ifcfg-ens161
+ #               cp /root/wi-oc/ifcfg-ens161-s /etc/sysconfig/network-scripts/ifcfg-ens256
+ #               echo "Interfaces configured as standby unit"
+            fi
+    echo "interface configuration complete, Press Enter to continue..."
 
-    echo "The folloing bond0 parameters will be used, Press Enter to continue"
-    more ifcfg-bond0
+
+
+    #echo "The folloing bond0 parameters will be used, Press Enter to continue"
+    #more ifcfg-bond0
+    
     read pressEnter
     clear
     echo "Interface configuration accepted, here are your current interface parameters:"
@@ -68,6 +97,7 @@ then
         if [ "$setupInt2Ans" = "y" ]
         then
             echo "Please enter the WAG IPv6 endpoint address"
+            echo "the ipv6 WAG address cannot be abbreviated with :: to hide zeros - enter the full address"
             read wagIpv6
             echo $wagIpv6 >> load_var.woc
         clear
@@ -118,13 +148,14 @@ then
             systemctl enable woc.service
             sleep 2
             echo "woc service enabled"
-            #firewall-cmd --permanent --zone=trusted --add-source=$wagIpv6
-            #firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
-            #firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagIpv6 -j ACCEPT
+            
+            firewall-cmd --permanent --zone=trusted --add-source=$wagIpv6
+            firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
+            firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagIpv6 -j ACCEPT
             #sleep 2
-            #echo "restarting firewall"
-            systemctl stop firewalld.service
-            systemctl disable firewalld.service
+            echo "restarting firewall"
+            #systemctl stop firewalld.service
+            #systemctl disable firewalld.service
 
         fi
         echo "If at any time you need to change these variables re-run the setup script!"
