@@ -32,8 +32,7 @@ set -x
 
 # add gretap and ethernet interface (inside) to bridge (br0)
   ip link set BNG1 master br0
-  ip link set ens224 master br0
-
+       
 # Enable links
   ip link set BNG1 up
   ip link set ens224 up
@@ -119,8 +118,9 @@ while [ $j -le 1 ]
   do
     dhclient -r ens256
     dhclient ens256 -1 -timeout 5
-    status=($?)
-      if [ $status -eq 0 ]
+    dhclient -r ens256
+    bstatus=($?)
+      if [ $bstatus -eq 0 ]
         then
           ((j=j+1))
           echo Some other device on the network segment is providing DHCP service, perhaps the partner WOC? >> $log

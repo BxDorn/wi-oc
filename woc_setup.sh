@@ -4,7 +4,6 @@
 clear
 
 #grab interface mac addresses
-ens161Mac=$(ip -o link | awk '$2 == "ens161:" {print $(NF-2)}')
 ens256Mac=$(ip -o link | awk '$2 == "ens256:" {print $(NF-2)}')
 
 
@@ -33,11 +32,9 @@ clear
 echo "Welcome to the Wireless Offload Concentrator / Tunneling Router setup!"
 echo "There are 2 numbered interfaces, and 2 unnumbered interfaces needed for the WOC to properly function."
 echo "The standard setup is as follows:"
-echo "ens192 - Dual stack interface and GREv6 source address of tunnel to the WAG for client traffic - this is the external interface"
-echo "ens224 - Unnumbered interface that faces the internal LAN segments "
-echo "ens256 - Failover cross connect 1 - bond0 member"
-echo "ens161 - Failover cross connect 2 - bond0 member"
-echo "bond0  - Failover interface"
+echo "ens192 - External Interface - Dual stack interface and GREv6 source address of tunnel to the WAG for client traffic - this is the external interface"
+echo "ens224 - Internal Interface - Unnumbered interface that faces the internal LAN segments "
+echo "ens256 - Failover Test Interface"
 echo " -----------------------------------------------------------------------------"
 echo "Are the aforementioned interfaces present and linked appropriately? (y/n)"
 
@@ -45,23 +42,8 @@ read setupIntAns
 if [ "$setupIntAns" == "y" ]
 then
     rm -rf load_var.woc
-    rm -rf /etc/sysconfig/network-scripts/ifcfg-bond0
-    rm -rf ifcfg-bond0
-
-
-
-#deprecated bond config
-#    echo "DEVICE=bond0" >> ifcfg-bond0
-#    echo "TYPE=Bond"  >> ifcfg-bond0
-#    echo "NAME=bond0"  >> ifcfg-bond0
-#    echo "BONDING_MASTER=yes"  >> ifcfg-bond0
-#    echo "BOOTPROTO=none"  >> ifcfg-bond0
-#    echo "ONBOOT=yes"  >> ifcfg-bond0
-#    echo "DEFROUTE=no"  >> ifcfg-bond0
-#    echo "BONDING_OPTS="mode=5 miimon=100""  >> ifcfg-bond0
-
-
-#ip a | awk '/^[a-z]/ { iface=$1; mac=$NF; next }/inet addr:/ { print iface, mac }'
+#    rm -rf /etc/sysconfig/network-scripts/ifcfg-ens192
+#    rm -rf /etc/sysconfig/network-scripts/ifcfg-ens224
 
 
 
@@ -69,17 +51,9 @@ then
     echo "is this unit the primary?"
         read isPrimary
             if [[ $isPrimary == "y" ]]; then
- #               rm /etc/sysconfig/network-scripts/ifcfg-ens161
- #               rm /etc/sysconfig/network-scripts/ifcfg-ens256
- #               cp /root/wi-oc/ifcfg-ens161-p /etc/sysconfig/network-scripts/ifcfg-ens161
- #               cp /root/wi-oc/ifcfg-ens161-p /etc/sysconfig/network-scripts/ifcfg-ens256
- #               echo "Interfaces configured as primary unit"
+                #copy ifcfg-files for primary
             else
- #               rm /etc/sysconfig/network-scripts/ifcfg-ens161
- #               rm /etc/sysconfig/network-scripts/ifcfg-ens256
- #               cp /root/wi-oc/ifcfg-ens161-s /etc/sysconfig/network-scripts/ifcfg-ens161
- #               cp /root/wi-oc/ifcfg-ens161-s /etc/sysconfig/network-scripts/ifcfg-ens256
- #               echo "Interfaces configured as standby unit"
+ 
             fi
     echo "interface configuration complete, Press Enter to continue..."
 
