@@ -5,7 +5,7 @@ echo "you must provide one VLAN per WOC, when you setup the partner WOC you will
 echo "Please provide the VLAN ID number for this WOC (just the number)"
 read vlanId
 
-echo "VLAN $vlanid will be used for the failover network, please ensure it is spanned to all WOC internal (ens224) and failover (ens256) interfaces on both WOCs"
+echo "VLAN $(vlanid) will be used for the failover network, please ensure it is spanned to all WOC internal (ens224) and failover (ens256) interfaces on both WOCs"
 
 ens256file="ifcfg-ens256.$(vlanid)"
 ens224file="ifcfg-ens224.$(vlanid)"
