@@ -4,7 +4,7 @@
 clear
 
 #grab interface mac addresses
-ens256Mac=$(ip -o link | awk '$2 == "ens256:" {print $(NF-2)}')
+#ens256Mac=$(ip -o link | awk '$2 == "ens256:" {print $(NF-2)}')
 
 
 
