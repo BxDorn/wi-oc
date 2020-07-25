@@ -1,9 +1,9 @@
 #!/bin/bash
 
-
+clear
 
 #-----------------------------------------------------------------------------------------
-#user intent declaration
+# User intent declaration
 #-----------------------------------------------------------------------------------------
 echo "This program will guide you through the interface setup for your Wireless Offload Concentrator"
 echo "This operation will over-write all current WOC interfaces, it should only be run to install the WOC or to correct any errors entered during a previous run of this script."
@@ -18,7 +18,7 @@ fi
 
 
 #-----------------------------------------------------------------------------------------
-#user readme
+# User readme
 #-----------------------------------------------------------------------------------------
 echo "There are 2 primary interfaces associated with the WOC, the internal (ens224) interface and the external (ens192) interface."
 echo "The internal interface is an unnumbered ethernet interface that connects to the local LAN"
@@ -70,8 +70,11 @@ else
 
 fi
 
+clear
+
 echo "The following parameters will be applied to the external interface (ens192):"
 echo "---------------------------------------------"
+echo "ens192"
 echo "IPv6 address "$localIPv6
 echo "IPv6 gateway: "$localIPv6Gateway
 echo "---------------------------------------------"
@@ -80,13 +83,26 @@ echo "IPv4 Gateway: "$localIPv4Gateway
 echo "---------------------------------------------"
 echo "---------------------------------------------"
 echo "---------------------------------------------"
+
 echo "Would you like to apply these values? (y/n)"
 read applyExtYn
+
 if [[ $applyExtYn != "y" ]]; then
 	echo "Parameters discarded, please re-run the script"
-	ext
+	exit
 else
 	echo "Applying parameters"
+	cp ens192.woc ifcfg-ens192
+	echo "IPADDR=" $localIPv4 >> ifcfg-ens192
+	echo "GATEWAY=" $localIPv4Gateway >> ifcfg-ens192
+	echo "PREFIX=" $localIPv4Prefix >> ifcfg-ens192
+	echo "IPV6ADDR=" $localIPv6 >> ifcfg-ens192
+	echo "IPV6_DEFAULTGW=" $localIPv6Gateway >> ifcfg-ens192
+
+
+clear
+more ifcfg-ens192
+
 fi
 
 #-----------------------------------------------------------------------------------------
@@ -101,10 +117,10 @@ echo "you must provide one VLAN per WOC, when you setup the partner WOC you will
 
 
 #-----------------------------------------------------------------------------------------
-#Primary declaration and interface build
+# Primary declaration and interface build
 #-----------------------------------------------------------------------------------------
 echo "Is this unit the primary WOC? (y/n)"
-ready primaryWoc
+read primaryWoc
 
 if [[ $primaryWoc == "y" ]]; then
 	#-----------------------------------------------------------------------------------------
@@ -118,8 +134,7 @@ if [[ $primaryWoc == "y" ]]; then
 else
 	
 
-
-	fi
+fi
 
 
 
