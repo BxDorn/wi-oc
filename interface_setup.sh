@@ -103,7 +103,7 @@ else
 #-----------------------------------------------------------------------------------------
 # rebuild local files and apply
 #-----------------------------------------------------------------------------------------
-	echo "Applying parameters"
+	echo "Building interface parameters"
 	cp ens192.woc ifcfg-ens192
 	echo "IPADDR=" $localIPv4 >> ifcfg-ens192
 	echo "GATEWAY=" $localIPv4Gateway >> ifcfg-ens192
@@ -132,39 +132,60 @@ clear
 echo "The WOCs need 2 VLANs to monitor one another for the purposes of high-availability and failover, these 2 VLANs should be spanned to both the internal and failover interfaces (ens224, ens256)"
 echo "you must provide one VLAN per WOC, when you setup the partner WOC you will provide the other VLAN"
 echo "Please provide the VLAN ID number for this WOC (just the number)"
-read vlanId
-
-echo "VLAN "$vlanid "will be used for the failover network, please ensure it is spanned to all WOC internal (ens224) and failover (ens256) interfaces on both WOCs"
-
-cp ens256vlan.woc 'ifcfg-ens256.$vlanid'
-cp ens256vlan.woc ifcfg-ens224.'$vlanid'
-echo "VLAN_ID=" $vlanid >> ifcfg-ens224.'$vlanid'
-echo "VLAN_ID=" $vlanid >> ifcfg-ens256.'$vlanid'
-echo "DEVICE=ens256."$vlanid >> ifcfg-ens256.'$vlanid'
-echo "DEVICE=ens224."$vlanid >> ifcfg-ens224.'$vlanid'
-more ifcfg-ens256.'$vlanid'
-more ifcfg-ens224.'$vlanid'
-
-ls
-
-exit
-
-
+read vlanID
+echo "VLAN" $vlanID "will be used for the failover network, please ensure it is spanned to all WOC internal (ens224) and failover (ens256) interfaces on both WOCs"
 
 #-----------------------------------------------------------------------------------------
-# Primary declaration and interface build
+# build ens256
 #-----------------------------------------------------------------------------------------
-echo "Is this unit the primary WOC? (y/n)"
-read primaryWoc
+rm -rf ifcfg-ens256
+cp ens256.woc ifcfg-ens256
+echo DEVICE=ens256 >> ifcfg-ens256
+#cp ifcfg-ens256 /etc/sysconfig/network-scripts/
+echo "---------------------------------------------"
+echo "Internal interface (ens256) built"
+echo "---------------------------------------------"
+more ifcfg-ens256
+sleep 3
+#-----------------------------------------------------------------------------------------
+# build ens256.VLAN
+#-----------------------------------------------------------------------------------------
+rm -rf ifcfg-ens256.$vlanID
+cp ens256.woc ifcfg-ens256.$vlanID
+echo VLAN_ID=$vlanID >> ifcfg-ens256.$vlanID
+echo DEVICE=ens256.$vlanID >> ifcfg-ens256.$vlanID
+#cp ifcfg-ens256.$vlanID /etc/sysconfig/network-scripts/
+echo "---------------------------------------------"
+echo "Failover Interface built"
+echo "---------------------------------------------"
+more ifcfg-ens256.$vlanID
+sleep 3
+#-----------------------------------------------------------------------------------------
+# build ens224
+#-----------------------------------------------------------------------------------------
+rm -rf ifcfg-ens224
+cp ens224.woc /etc/sysconfig/network-scripts/ifcfg-ens224
+echo "---------------------------------------------"
+echo "Internal Interface built"
+echo "---------------------------------------------"
+more /etc/sysconfig/network-scripts/ifcfg-ens224
+sleep 3
+#-----------------------------------------------------------------------------------------
+# build ens224.VLAN
+#-----------------------------------------------------------------------------------------
+cp ens224.woc ifcfg-ens224.$vlanID
+echo VLAN_ID=$vlanID >> ifcfg-ens224.$vlanID
+echo DEVICE=ens256.$vlanID >> ifcfg-ens224.$vlanID
+#cp ifcfg-ens224.$vlanID /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+echo "---------------------------------------------"
+echo "Internal Interface built"
+echo "---------------------------------------------"
+more ifcfg-ens224.$vlanID
+sleep 3
 
-if [[ $primaryWoc == "y" ]]; then
 
-
-else
-	
-
-fi
-
+echo "All done! Please run woc_setup.sh to configure your Wi-Fi Offload Concentrator"
+ext
 
 
 

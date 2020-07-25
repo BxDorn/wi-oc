@@ -36,3 +36,21 @@ fi
 
 
 firewall-cmd --direct --add-rule ipv4 filter INPUT 0 -m mac --mac-source 00:0c:29:3c:97:65 -j DROP
+
+
+#-----------------------------------------------------------------------------------------
+# Primary declaration and interface build
+#-----------------------------------------------------------------------------------------
+echo "Is this unit the primary WOC? (y/n)"
+read primaryWoc
+
+
+
+if [[ $primaryWoc == "y" ]]; then
+
+
+else
+    
+
+fi
+
