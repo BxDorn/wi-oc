@@ -7,6 +7,7 @@ clear
 #-----------------------------------------------------------------------------------------
 echo "This program will guide you through the interface setup for your Wireless Offload Concentrator"
 echo "This operation will over-write all current WOC interfaces, it should only be run to install the WOC or to correct any errors entered during a previous run of this script."
+
 echo "do you want to proceed? (y/n)"
 
 read proceed
@@ -92,6 +93,16 @@ if [[ $applyExtYn != "y" ]]; then
 	echo "Parameters discarded, please re-run the script"
 	exit
 else
+#-----------------------------------------------------------------------------------------
+# Remove local ifcfg-ens### files
+#-----------------------------------------------------------------------------------------
+	rm -rf ifcfg-ens192
+	rm -rf ifcfg-ens256
+	rm -rf ifcfg-ens224
+
+#-----------------------------------------------------------------------------------------
+# rebuild local files and apply
+#-----------------------------------------------------------------------------------------
 	echo "Applying parameters"
 	cp ens192.woc ifcfg-ens192
 	echo "IPADDR=" $localIPv4 >> ifcfg-ens192
@@ -99,21 +110,43 @@ else
 	echo "PREFIX=" $localIPv4Prefix >> ifcfg-ens192
 	echo "IPV6ADDR=" $localIPv6 >> ifcfg-ens192
 	echo "IPV6_DEFAULTGW=" $localIPv6Gateway >> ifcfg-ens192
-
-
-clear
-more ifcfg-ens192
-
+	clear
+	more ifcfg-ens192
+	echo "Do you want to write these parameters to the interface file? (y/n)"
+	read ens192Apply
+	if [[ $ens192Apply != "y" ]]; then
+		echo "operation cancelled, please re-run script"
+		exit
+	else
+		#cp ifcfg-ens192 /etc/sysconfig/network-scripts/ifcfg-ens192
+		echo "External interface parameters applied"
+		echo "Press any key to continue..."
+		read anykey
+	fi
 fi
+clear
 
 #-----------------------------------------------------------------------------------------
 # Collect failover interface parameters
 #-----------------------------------------------------------------------------------------
 echo "The WOCs need 2 VLANs to monitor one another for the purposes of high-availability and failover, these 2 VLANs should be spanned to both the internal and failover interfaces (ens224, ens256)"
 echo "you must provide one VLAN per WOC, when you setup the partner WOC you will provide the other VLAN"
+echo "Please provide the VLAN ID number for this WOC (just the number)"
+read vlanId
 
+echo "VLAN "$vlanid "will be used for the failover network, please ensure it is spanned to all WOC internal (ens224) and failover (ens256) interfaces on both WOCs"
 
+cp ens256VLAN.woc ifcfg-ens256.'$vlanid'
+cp ens256VLAN.woc ifcfg-ens224.'$vlanid'
+echo "VLAN_ID=" $vlanid >> ifcfg-ens224.'$vlanid'
+echo "VLAN_ID=" $vlanid >> ifcfg-ens256.'$vlanid'
 
+more ifcfg-ens256.'$vlanid'
+more ifcfg-ens224.'$vlanid'
+
+ls
+
+exit
 
 
 
@@ -124,13 +157,7 @@ echo "Is this unit the primary WOC? (y/n)"
 read primaryWoc
 
 if [[ $primaryWoc == "y" ]]; then
-	#-----------------------------------------------------------------------------------------
-	# Collect failover interface parameters
-	#-----------------------------------------------------------------------------------------
-	echo "The WOCs need 2 VLANs to monitor one another for the purposes of high-availability and failover, these 2 VLANs should be spanned to both the internal and failover interfaces (ens224, ens256)"
-	echo "you must provide one VLAN per WOC, when you setup the partner WOC you will provide the other VLAN"
-	echo "please enter the VLAN number you would like to use for this WOC"
-	read primaryVlanId
+
 
 else
 	

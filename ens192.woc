@@ -9,15 +9,3 @@ IPV6_ADDR_GEN_MODE="stable-privacy"
 BOOTPROTO="static"
 TYPE=Ethernet
 IPV6_PRIVACY="no"
-
-
-
-
-
-#reference
-#IPV6ADDR=2600:6ce6:4400:65::7
-#IPV6_DEFAULTGW=2600:6ce6:4400:65::1
-#IPADDR="10.0.145.7"
-#PREFIX="28"
-#GATEWAY="10.0.145.1"
-#DNS1="8.8.8.8"
