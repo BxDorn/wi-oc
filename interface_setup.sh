@@ -51,7 +51,7 @@ echo "First, lets configure the external interface"
 echo "please enter the IPv6 address you would like to assign to the external interface"
 read localIPv6
 
-echo $localIPv6 "will be used as the external interface IPv6 address - if this is incorrect, press Enter to proceed, otherwise ctrl-c and start the script again."
+echo $localIPv6 "will be used as the external interface IPv6 address - if this is correct, press Enter to proceed, otherwise ctrl-c and start the script again."
 read enter
 echo "Please enter the IPv6 default gateway:"
 read localIPv6Gateway
@@ -136,8 +136,8 @@ read vlanId
 
 echo "VLAN "$vlanid "will be used for the failover network, please ensure it is spanned to all WOC internal (ens224) and failover (ens256) interfaces on both WOCs"
 
-cp ens256VLAN.woc 'ifcfg-ens256.$vlanid'
-cp ens256VLAN.woc ifcfg-ens224.'$vlanid'
+cp ens256vlan.woc 'ifcfg-ens256.$vlanid'
+cp ens256vlan.woc ifcfg-ens224.'$vlanid'
 echo "VLAN_ID=" $vlanid >> ifcfg-ens224.'$vlanid'
 echo "VLAN_ID=" $vlanid >> ifcfg-ens256.'$vlanid'
 echo "DEVICE=ens256."$vlanid >> ifcfg-ens256.'$vlanid'
