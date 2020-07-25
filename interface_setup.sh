@@ -136,11 +136,12 @@ read vlanId
 
 echo "VLAN "$vlanid "will be used for the failover network, please ensure it is spanned to all WOC internal (ens224) and failover (ens256) interfaces on both WOCs"
 
-cp ens256VLAN.woc ifcfg-ens256.'$vlanid'
+cp ens256VLAN.woc 'ifcfg-ens256.$vlanid'
 cp ens256VLAN.woc ifcfg-ens224.'$vlanid'
 echo "VLAN_ID=" $vlanid >> ifcfg-ens224.'$vlanid'
 echo "VLAN_ID=" $vlanid >> ifcfg-ens256.'$vlanid'
-
+echo "DEVICE=ens256."$vlanid >> ifcfg-ens256.'$vlanid'
+echo "DEVICE=ens224."$vlanid >> ifcfg-ens224.'$vlanid'
 more ifcfg-ens256.'$vlanid'
 more ifcfg-ens224.'$vlanid'
 
