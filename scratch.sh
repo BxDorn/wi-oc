@@ -54,3 +54,41 @@ else
 
 fi
 
+
+
+
+
+
+woc 2 info
+
+2: ens192: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 00:0c:29:06:d6:ff brd ff:ff:ff:ff:ff:ff
+    inet 10.0.145.5/28 brd 10.0.145.15 scope global ens192
+       valid_lft forever preferred_lft forever
+    inet6 2600:6ce6:4400:65::5/64 scope global 
+       valid_lft forever preferred_lft forever
+    inet6 fe80::20c:29ff:fe06:d6ff/64 scope link 
+       valid_lft forever preferred_lft forever
+3: ens224: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 00:0c:29:06:d6:09 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::20c:29ff:fe06:d609/64 scope link 
+       valid_lft forever preferred_lft forever
+4: ens256: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 00:0c:29:06:d6:13 brd ff:ff:ff:ff:ff:ff
+    inet 100.64.250.149/24 brd 100.64.250.255 scope global ens256:555
+       valid_lft forever preferred_lft forever
+    inet6 fe80::20c:29ff:fe06:d613/64 scope link 
+       valid_lft forever preferred_lft forever
+5: ens256.2498@ens256: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 00:0c:29:06:d6:13 brd ff:ff:ff:ff:ff:ff
+    inet 100.64.250.98/24 brd 100.64.250.255 scope global ens256.2498
+       valid_lft forever preferred_lft forever
+    inet 100.64.250.250/24 brd 100.64.250.255 scope global secondary dynamic ens256.2498
+       valid_lft 218sec preferred_lft 218sec
+    inet6 fe80::20c:29ff:fe06:d613/64 scope link 
+       valid_lft forever preferred_lft forever
+
+
+
+       WAG: 2600:6ce6:4403::1
+       

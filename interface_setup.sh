@@ -116,7 +116,7 @@ else
 		echo "operation cancelled, please re-run script"
 		exit
 	else
-		#cp ifcfg-ens192 /etc/sysconfig/network-scripts/ifcfg-ens192
+		cp ifcfg-ens192 /etc/sysconfig/network-scripts/ifcfg-ens192
 		echo "External interface parameters applied"
 		echo "Press any key to continue..."
 		read anykey
@@ -139,7 +139,7 @@ echo "VLAN" $vlanID "will be used for the failover network, please ensure it is 
 rm -rf ifcfg-ens256
 cp ens256.woc ifcfg-ens256
 echo DEVICE=ens256 >> ifcfg-ens256
-#cp ifcfg-ens256 /etc/sysconfig/network-scripts/
+cp ifcfg-ens256 /etc/sysconfig/network-scripts/
 echo "---------------------------------------------"
 echo "Internal interface (ens256) built"
 echo "---------------------------------------------"
@@ -153,7 +153,7 @@ rm -rf ifcfg-ens256.$vlanID
 cp ens256.woc ifcfg-ens256.$vlanID
 echo VLAN_ID=$vlanID >> ifcfg-ens256.$vlanID
 echo DEVICE=ens256.$vlanID >> ifcfg-ens256.$vlanID
-#cp ifcfg-ens256.$vlanID /etc/sysconfig/network-scripts/
+cp ifcfg-ens256.$vlanID /etc/sysconfig/network-scripts/
 echo "---------------------------------------------"
 echo "Heartbeat Interface built"
 echo "---------------------------------------------"
@@ -177,12 +177,22 @@ sleep 3
 cp ens224.woc ifcfg-ens224.$vlanID
 echo VLAN_ID=$vlanID >> ifcfg-ens224.$vlanID
 echo DEVICE=ens256.$vlanID >> ifcfg-ens224.$vlanID
-#cp ifcfg-ens224.$vlanID /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+cp ifcfg-ens224.$vlanID /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
 echo "---------------------------------------------"
 echo "Internal Failover Interface built"
 echo "---------------------------------------------"
 more ifcfg-ens224.$vlanID
-sleep 3
+
+systemctl restart network.service
+	sleep 7 &
+	PID=$!
+	i=1
+	sp="/-\|"
+	echo -n ' '
+	while [ -d /proc/$PID ]
+	do
+	  printf "\b${sp:i++%${#sp}:1}"
+	done
 
 #-----------------------------------------------------------------------------------------
 # end
