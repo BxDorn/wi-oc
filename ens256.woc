@@ -1,6 +1,5 @@
 TYPE=Ethernet
 BOOTPROTO=none
-DEVICE=ens256
 ONBOOT=yes
 DEFROUTE=no
 ZONE=trusted
