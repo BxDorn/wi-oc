@@ -136,6 +136,8 @@ sleep 3
 #-----------------------------------------------------------------------------------------
 rm -rf ifcfg-ens224
 cp ens224.woc /etc/sysconfig/network-scripts/ifcfg-ens224
+echo "NAME=ens224" >> 
+echo "DEVICE=ens224"
 echo "---------------------------------------------"
 echo "Internal Interface built"
 echo "---------------------------------------------"
@@ -145,35 +147,27 @@ sleep 3
 #-----------------------------------------------------------------------------------------
 # build ens224.VLAN
 #-----------------------------------------------------------------------------------------
-cp ens224.woc ifcfg-ens224.$vlanID
-echo VLAN_ID=$vlanID >> ifcfg-ens224.$vlanID
-echo DEVICE=ens224.$vlanID >> ifcfg-ens224.$vlanID
-echo "VLAN=yes" >> ifcfg-ens224.$vlanID
-echo "IPADDR=100.64.250.99" >> ifcfg-ens224.$vlanID
-echo "DEFROUTE=no" >> ifcfg-ens224.$vlanID
-echo "GATEWAY=100.64.250.1" >> ifcfg-ens224.$vlanID
-echo "PREFIX=24" >> ifcfg-ens224.$vlanID
-cp ifcfg-ens224.$vlanID /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+#cp ens224.woc /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+echo DEVICE=ens224.$vlanID >> /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+echo NAME=ens224.$vlanID >> /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+echo "ONBOOT=yes" >> /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+echo "NETBOOT=yes" >> /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+echo "TYPE=Ethernet" >> /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+echo VLAN_ID=$vlanID >> /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+echo "VLAN=yes" >> /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+echo "IPADDR=100.64.250.99" >> /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+echo "DEFROUTE=no" >> /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+echo "GATEWAY=100.64.250.1" >> /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
+echo "PREFIX=24" >> /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
 echo "---------------------------------------------"
 echo "Internal Failover Interface built"
 echo "---------------------------------------------"
-more ifcfg-ens224.$vlanID
+more /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
 
 systemctl restart network.service
-	sleep 7 &
-	PID=$!
-	i=1
-	sp="/-\|"
-	echo -n ' '
-	while [ -d /proc/$PID ]
-	do
-	  printf "\b${sp:i++%${#sp}:1}"
-	done
-
+echo "Done! Press any key to continue"
 clear
 
-#grab interface mac addresses
-#ens256Mac=$(ip -o link | awk '$2 == "ens256:" {print $(NF-2)}')
 
 ls | grep load_var.woc
 firstTime=($?)
@@ -188,6 +182,7 @@ else
     echo "do you want to continue?"
     read firstTimeAns
     if [[ $firstTimeAns != "y" ]]; then
+        rm -rf load_var.woc
         exit
     fi
 fi
@@ -280,21 +275,10 @@ then
             firewall-cmd --reload
             sleep 5
             systemctl restart firewalld.service
-                PID=$!
-                i=1
-                sp="/-\|"
-                echo -n ' '
-                while [ -d /proc/$PID ]
-                do
-                  printf "\b${sp:i++%${#sp}:1}"
-                done
-            #systemctl stop firewalld.service
-            #systemctl disable firewalld.service
 
         fi
         echo "If at any time you need to change these variables re-run the setup script!"
         echo "Press Enter to reboot to apply the new settings"
-        echo $vlanID >> load_var.woc
         read pressEnter
         reboot
         else

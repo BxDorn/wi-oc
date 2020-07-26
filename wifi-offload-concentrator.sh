@@ -52,9 +52,6 @@ set -x
 # bridge link set dev ens224 guard on
 set +x
 
-#moved to setup file - deprecated here
-#firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
-#firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagEndpt -j ACCEPT
 
 
 
@@ -99,18 +96,14 @@ while [ $i -le 5 ]
          echo "At 6 failed attempts this WOC will take over as primary"
          echo --------------------------------------
          sleep 1
-
-# removed the sleep delay - if the DHCP failes it already has a timeout of 5 seconds before this logic is called.
-#         sleep 2
-
       fi
 done
 
 ## build script for WOC
 echo $i unsuccessful attempts to through primary WOC. >> $log
-echo Master Down - This unit is now primary $date >> $log
+echo This unit is now primary $date >> $log
 echo $i unsuccessful attempts to through primary WOC.
-echo Master Down - This unit is now primary $date
+echo This unit is now primary $date
 echo "Primary" > /root/wi-oc/woc_status.woc
 
 #enable the bridge to usurp the failed unit.
