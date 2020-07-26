@@ -38,12 +38,14 @@ set -x
 
 # add gretap and ethernet interface (inside) to bridge (br0)
   ip link set BNG1 master br0
+  ip link set ens224 master br0
        
 # Enable links
   ip link set BNG1 up
   ip link set ens224 up
   ip link set ens192 up
-
+  ip link set ens224.$vlanID up
+  ip link set ens256.$vlanID up
 # disable the bridge
   ip link set br0 down
 
@@ -131,6 +133,7 @@ while [ $j -le 1 ]
           ((j=j+1))
           echo Some other device on the network segment is providing DHCP service, perhaps the partner WOC? >> $log
           echo Some other device on the network segment is providing DHCP service, perhaps the partner WOC?
+          ip link set br0 down
         else
           j=0
           echo "Primary" > woc_status.woc

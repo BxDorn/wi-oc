@@ -265,11 +265,28 @@ then
             echo "woc service enabled"
             
             #firewall-cmd --permanent --zone=trusted --add-source=$wagIpv6
-            firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
-            firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagIpv6 -j ACCEPT
+            firewall-cmd --permanent --direct --add-rule --zone=public ipv6 filter INPUT 0 -p gre -j ACCEPT
+            firewall-cmd --permanent --direct --add-rule --zone=public ipv6 filter INPUT 0 -p icmpv6 -s $wagIpv6 -j ACCEPT
+            firewall-cmd --permanent --change-zone=ens192 --zone=public
+            firewall-cmd --permanent --change-zone=ens256.2498 --zone=trusted
+            firewall-cmd --permanent --change-zone=ens224.2498 --zone=drop
+            firewall-cmd --permanent --change-zone=ens224 --zone=trusted
+            firewall-cmd --permanent --change-zone=ens256 --zone=trusted
+
             #sleep 2
             echo "restarting firewall"
+            firewall-cmd --reload
+            sleep 5
             systemctl restart firewalld.service
+                sleep 1 &
+                PID=$!
+                i=1
+                sp="/-\|"
+                echo -n ' '
+                while [ -d /proc/$PID ]
+                do
+                  printf "\b${sp:i++%${#sp}:1}"
+                done
             #systemctl stop firewalld.service
             #systemctl disable firewalld.service
 
