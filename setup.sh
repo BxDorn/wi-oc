@@ -134,10 +134,12 @@ sleep 3
 #-----------------------------------------------------------------------------------------
 # build ens224
 #-----------------------------------------------------------------------------------------
-rm -rf ifcfg-ens224
 cp ens224.woc /etc/sysconfig/network-scripts/ifcfg-ens224
-echo "NAME=ens224" >> 
-echo "DEVICE=ens224"
+echo "DEVICE=ens224" >> /etc/sysconfig/network-scripts/ifcfg-ens224
+echo "NAME=ens224" >> /etc/sysconfig/network-scripts/ifcfg-ens224
+echo "ONBOOT=yes" >> /etc/sysconfig/network-scripts/ifcfg-ens224
+echo "NETBOOT=yes" >> /etc/sysconfig/network-scripts/ifcfg-ens224
+echo "TYPE=Ethernet" >> /etc/sysconfig/network-scripts/ifcfg-ens224
 echo "---------------------------------------------"
 echo "Internal Interface built"
 echo "---------------------------------------------"
