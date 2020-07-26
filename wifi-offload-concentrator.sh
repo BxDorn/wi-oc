@@ -6,7 +6,13 @@ log=/root/wi-oc/log_woc.txt
 now=$(date)
 i=0
 j=0
-echo "Standby" > /root/wi-oc/woc_status.woc
+#echo "Standby" > /root/wi-oc/woc_status.woc
+
+vlanID=
+
+
+
+
 
 ls /root/wi-oc/ | grep load_var.woc
 loadVarPresent=($?)
