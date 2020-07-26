@@ -8,7 +8,7 @@ i=0
 j=0
 #echo "Standby" > /root/wi-oc/woc_status.woc
 
-vlanID=
+vlanID=$(sed '2q;d' load_var.woc)
 
 
 
@@ -59,14 +59,14 @@ set +x
 ## establish counter for HA retries - after 5 attempts the script will trigger a failover.
 while [ $i -le 5 ]
   do
-    dhclient -r ens256
-    dhclient ens256 -1 -timeout 5
+    dhclient -r ens256.$vlanID
+    dhclient ens256.$vlanID -1 -timeout 5
 
 # Basic ping heartbeat - deprecated.
 #    ping 192.168.1.11 -c 1
     
     status=($?)
-    dhclient -r ens256
+    dhclient -r ens256.$vlanID
     
 ## loop successful heartbeats
     if [ $status -eq 0 ]
@@ -122,9 +122,9 @@ echo This WOC is primary - Monitoring status of backup $(date)
 # Post userpation monitoring of secondary WOC.
 while [ $j -le 1 ]
   do
-    dhclient -r ens256
-    dhclient ens256 -1 -timeout 5
-    dhclient -r ens256
+    dhclient -r ens256.$vlanID
+    dhclient ens256.$vlanID -1 -timeout 5
+    dhclient -r ens256.$vlanID
     bstatus=($?)
       if [ $bstatus -eq 0 ]
         then

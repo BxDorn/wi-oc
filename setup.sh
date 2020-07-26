@@ -242,10 +242,13 @@ then
                 echo "loading service"
                 cp woc.service /etc/systemd/system/
                 chmod +x /etc/systemd/system/woc.service
-                ls /ect/systemd/system/ | grep woc.service
+                ls /etc/systemd/system/ | grep woc.service
                 cpStatus=($?)
                 if [[ $cpStatus -eq 0 ]]; then
                     echo "serice file loaded!"
+                else 
+                    echo "an error occured, cannot find the service file, check permissions."
+                    exit
                 fi
             fi
         fi
@@ -266,6 +269,7 @@ then
             firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagIpv6 -j ACCEPT
             #sleep 2
             echo "restarting firewall"
+            systemctl restart firewalld.service
             #systemctl stop firewalld.service
             #systemctl disable firewalld.service
 
