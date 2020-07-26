@@ -55,10 +55,6 @@ echo "First, lets configure the external interface"
 
 echo "please enter the IPv6 address you would like to assign to the external interface"
 read localIPv6
-
-echo $localIPv6 "will be used as the external interface IPv6 address - if this is correct, press" 
-echo "Enter to proceed, otherwise ctrl-c and start the script again."
-read enter
 echo "Please enter the IPv6 default gateway:"
 read localIPv6Gateway
 
@@ -71,7 +67,7 @@ echo "IPv6 address "$localIPv6
 echo "IPv6 gateway: "$localIPv6Gateway
 echo "---------------------------------------------"
 
-echo "Are these parameters correct?? (y/n)"
+echo "Are these parameters correct? (y/n)"
 read applyExtYn
 
 if [[ $applyExtYn != "y" ]]; then
@@ -120,6 +116,11 @@ rm -rf ifcfg-ens256.$vlanID
 cp ens256.woc ifcfg-ens256.$vlanID
 echo VLAN_ID=$vlanID >> ifcfg-ens256.$vlanID
 echo DEVICE=ens256.$vlanID >> ifcfg-ens256.$vlanID
+echo "VLAN=yes" >> ifcfg-ens256.$vlanID
+echo "IPADDR=100.64.250.100" >> ifcfg-ens256.$vlanID
+echo "DEFROUTE=no" >> ifcfg-ens256.$vlanID
+echo "GATEWAY=100.64.250.1" >> ifcfg-ens256.$vlanID
+echo "PREFIX=24" >> ifcfg-ens256.$vlanID
 cp ifcfg-ens256.$vlanID /etc/sysconfig/network-scripts/
 echo "---------------------------------------------"
 echo "Heartbeat Interface built"
@@ -143,7 +144,12 @@ sleep 3
 #-----------------------------------------------------------------------------------------
 cp ens224.woc ifcfg-ens224.$vlanID
 echo VLAN_ID=$vlanID >> ifcfg-ens224.$vlanID
-echo DEVICE=ens256.$vlanID >> ifcfg-ens224.$vlanID
+echo DEVICE=ens224.$vlanID >> ifcfg-ens224.$vlanID
+echo "VLAN=yes" >> ifcfg-ens224.$vlanID
+echo "IPADDR=100.64.250.99" >> ifcfg-ens224.$vlanID
+echo "DEFROUTE=no" >> ifcfg-ens224.$vlanID
+echo "GATEWAY=100.64.250.1" >> ifcfg-ens224.$vlanID
+echo "PREFIX=24" >> ifcfg-ens224.$vlanID
 cp ifcfg-ens224.$vlanID /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
 echo "---------------------------------------------"
 echo "Internal Failover Interface built"
