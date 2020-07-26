@@ -43,7 +43,8 @@ read anykey
 
 echo "The external interface can be dual-stacked with IPv4 and IPv6 addressing, but for the purposes of tunneling,"
 echo "only requires an IPv6 address.The IPv4 address given to this interface is used for the purposes of management"
-echo "and reporting, and is optoinal - though highly recommended."
+echo "and reporting, and is optoinal - though highly recommended. Make sure that ens192 has an IPv4 address before running"
+echo "this script."
 
 
 

@@ -42,28 +42,6 @@ read setupIntAns
 if [ "$setupIntAns" == "y" ]
 then
     rm -rf load_var.woc
-#    rm -rf /etc/sysconfig/network-scripts/ifcfg-ens192
-#    rm -rf /etc/sysconfig/network-scripts/ifcfg-ens224
-
-
-
-
-    echo "is this unit the primary?"
-        read isPrimary
-            if [[ $isPrimary == "y" ]]; then
-                #copy ifcfg-files for primary
-            else
- 
-            fi
-    echo "interface configuration complete, Press Enter to continue..."
-
-
-
-    #echo "The folloing bond0 parameters will be used, Press Enter to continue"
-    #more ifcfg-bond0
-    
-    read pressEnter
-    clear
     echo "Interface configuration accepted, here are your current interface parameters:"
     ip a
     echo "Is this interface configuration correct for your install?"
@@ -84,10 +62,6 @@ then
         echo "The WAG IPv6 endpoint is:"
         echo "$wagIpv6"
         echo "-------------------------------------------------------------------------"
-        cp ifcfg-bond0 /etc/sysconfig/network-scripts/
-        echo "Primary" >> load_var.woc
-
-        clear
         echo "Checking for presence of woc service file"
 
         ls /etc/systemd/system/ | grep woc.service
@@ -105,6 +79,7 @@ then
                 echo "loading service"
                 cp woc.service /etc/systemd/system/
                 chmod +x /etc/systemd/system/woc.service
+                ls /ect/systemd/system/ | grep woc.service
                 cpStatus=($?)
                 if [[ $cpStatus -eq 0 ]]; then
                     echo "serice file loaded!"
@@ -123,7 +98,7 @@ then
             sleep 2
             echo "woc service enabled"
             
-            firewall-cmd --permanent --zone=trusted --add-source=$wagIpv6
+            #firewall-cmd --permanent --zone=trusted --add-source=$wagIpv6
             firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
             firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagIpv6 -j ACCEPT
             #sleep 2
