@@ -55,6 +55,8 @@ echo "Now lets begin to enter some informaion about the WOC"
 echo "First, lets configure the external interface"
 
 echo "please enter the IPv6 address you would like to assign to the external interface"
+echo " in the format <ipv6 address>/prefix"
+echo "exampe 2600:6ce6:4403::10/64"
 read localIPv6
 echo "Please enter the IPv6 default gateway:"
 read localIPv6Gateway
@@ -265,8 +267,8 @@ then
             echo "woc service enabled"
             
             #firewall-cmd --permanent --zone=trusted --add-source=$wagIpv6
-            firewall-cmd --permanent --direct --add-rule --zone=public ipv6 filter INPUT 0 -p gre -j ACCEPT
-            firewall-cmd --permanent --direct --add-rule --zone=public ipv6 filter INPUT 0 -p icmpv6 -s $wagIpv6 -j ACCEPT
+            firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT
+            firewall-cmd --permanent --direct --add-rule ipv6 filter INPUT 0 -p icmpv6 -s $wagIpv6 -j ACCEPT
             firewall-cmd --permanent --change-zone=ens192 --zone=public
             firewall-cmd --permanent --change-zone=ens256.2498 --zone=trusted
             firewall-cmd --permanent --change-zone=ens224.2498 --zone=drop
@@ -278,7 +280,6 @@ then
             firewall-cmd --reload
             sleep 5
             systemctl restart firewalld.service
-                sleep 1 &
                 PID=$!
                 i=1
                 sp="/-\|"
