@@ -1,0 +1,6 @@
+IG steps for WOCv2
+
+1. SOSI image 7.7.
+2. add 2 additional interfaces.
+3. run ./setup.sh
+4. connect clients

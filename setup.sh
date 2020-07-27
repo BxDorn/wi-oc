@@ -46,7 +46,15 @@ echo "only requires an IPv6 address.The IPv4 address given to this interface is 
 echo "and reporting, and is optoinal - though highly recommended. Make sure that ens192 has an IPv4 address before running"
 echo "this script."
 
+rm -rf woc_status.woc
 
+echo "Is this unit the primary? y/n (the first WOC you configure is usually the primary and the second WOC is usually the standby)"
+read primaryYn
+if [[ $primaryYn =="y" ]]; then
+    echo Primary >> woc_status.woc
+else
+    echo Standby >> woc_status.woc
+fi
 
 #-----------------------------------------------------------------------------------------
 # Collect external interface parameters, build dataplane interfaces
@@ -54,8 +62,32 @@ echo "this script."
 echo "Now lets begin to enter some informaion about the WOC"
 echo "First, lets configure the external interface"
 
-echo "please enter the IPv6 address you would like to assign to the external interface"
-echo " in the format <ipv6 address>/prefix"
+
+
+#-----------------------------------------------------------------------------------------
+# IPv4 address (ens192)
+#-----------------------------------------------------------------------------------------
+echo "Would you like to configure an IPv4 address on the WOC for the purposes of SSH management of the device?"
+echo "note, if you have DHCP enabled for IPv4 you can skip this step, thought it is recommended you statically define an IPv4 address" 
+echo "here is what ens192 currently looks like:"
+ip a ens192
+read ipv4Yn
+if [[ $ipv4Yn == "y" ]]; then
+    echo "Please enter the IPv4 address for the WOC"
+    read localIpv4
+    echo "Please enter the IPv4 prefix of the subnet (example: 24)"
+    read ipv4Prefix
+    echo "please enter the IPv4 gateway of the subnet"
+    read ipv4Gateway
+    echo $localIpv4 >> /etc/sysconfig/network-scripts/ifcfg-ens192
+    echo $ipv4Prefix >> /etc/sysconfig/network-scripts/ifcfg-ens192
+    echo $ipv4Gateway >>/etc/sysconfig/network-scripts/ifcfg-ens192
+fi
+#-----------------------------------------------------------------------------------------
+# IPv6 address
+#-----------------------------------------------------------------------------------------
+echo "Please enter the IPv6 address you would like to assign to the external interface"
+echo "in the format <ipv6 address>/prefix"
 echo "exampe 2600:6ce6:4403::10/64"
 read localIPv6
 echo "Please enter the IPv6 default gateway:"
@@ -166,6 +198,7 @@ echo "Internal Failover Interface built"
 echo "---------------------------------------------"
 more /etc/sysconfig/network-scripts/ifcfg-ens224.$vlanID
 
+echo "Restarting network service, this will take 10-15 seconds to complete..."
 systemctl restart network.service
 echo "Done! Press any key to continue"
 clear
