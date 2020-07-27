@@ -70,7 +70,7 @@ echo "First, lets configure the external interface"
 echo "Would you like to configure an IPv4 address on the WOC for the purposes of SSH management of the device?"
 echo "note, if you have DHCP enabled for IPv4 you can skip this step, thought it is recommended you statically define an IPv4 address" 
 echo "here is what ens192 currently looks like:"
-ip a ens192
+ip a show dev ens192
 read ipv4Yn
 if [[ $ipv4Yn == "y" ]]; then
     echo "Please enter the IPv4 address for the WOC"
