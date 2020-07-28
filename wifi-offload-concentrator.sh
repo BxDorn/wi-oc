@@ -95,7 +95,7 @@ while [ $i -le 5 ]
          echo DHCP status code = $status
          echo "At 6 failed attempts this WOC will take over as primary"
          echo --------------------------------------
-         sleep 1
+         sleep 2
       fi
 done
 
@@ -114,12 +114,14 @@ ip link set br0 up
 echo This WOC is primary - Monitoring status of backup $(date) >> $log
 echo This WOC is primary - Monitoring status of backup $(date)
 
+failIface=ens256.$vlanID
+
 # Post userpation monitoring of secondary WOC.
 while [ $j -le 1 ]
   do
-    dhclient -r ens256.$vlanID
-    dhclient ens256.$vlanID -1 -timeout 5
-    dhclient -r ens256.$vlanID
+    dhclient -r $failIface
+    dhclient $failIface -1 -timeout 5
+    dhclient -r $failIface
     bstatus=($?)
       if [ $bstatus -eq 0 ]
         then
@@ -130,6 +132,7 @@ while [ $j -le 1 ]
         else
           j=0
           echo "Primary" > woc_status.woc
+          sleeep 2
       fi
   done
 
