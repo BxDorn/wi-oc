@@ -9,7 +9,7 @@ j=0
 #echo "Standby" > /root/wi-oc/woc_status.woc
 
 vlanID=$(sed '2q;d' /root/wi-oc/load_var.woc)
-standby > woc_status.woc
+standby >> woc_status.woc
 
 
 
@@ -104,7 +104,7 @@ echo $i unsuccessful attempts to through primary WOC. >> $log
 echo This unit is now primary $date >> $log
 echo $i unsuccessful attempts to through primary WOC.
 echo This unit is now primary $date
-echo "Primary" > /root/wi-oc/woc_status.woc
+echo "Primary" >> /root/wi-oc/woc_status.woc
 
 #enable the bridge to usurp the failed unit.
 #ip link set ens224 up
