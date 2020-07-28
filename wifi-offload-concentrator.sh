@@ -65,7 +65,7 @@ while [ $i -le 5 ]
 #    ping 192.168.1.11 -c 1
     
     status=($?)
-    dhclient -r ens256.$vlanID
+    dhclient -r ens256.$(vlanID)
     
 ## loop successful heartbeats
     if [ $status -eq 0 ]
@@ -118,9 +118,9 @@ echo This WOC is primary - Monitoring status of backup $(date)
 # Post userpation monitoring of secondary WOC.
 while [ $j -le 1 ]
   do
-    dhclient -r ens256.$vlanID
-    dhclient ens256.$vlanID -1 -timeout 5
-    dhclient -r ens256.$vlanID
+    dhclient -r ens256.$(vlanID)
+    dhclient ens256.$(vlanID) -1 -timeout 5
+    dhclient -r ens256.$(vlanID)
     bstatus=($?)
       if [ $bstatus -eq 0 ]
         then
