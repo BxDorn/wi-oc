@@ -120,7 +120,6 @@ while [ $j -le 1 ]
   do
     dhclient -r ens256.$vlanID
     dhclient ens256.$vlanID -1 -timeout 5
-    dhclient -r ens256.$vlanID
     bstatus=($?)
       if [ $bstatus -eq 0 ]
         then
