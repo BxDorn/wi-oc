@@ -59,7 +59,7 @@ set +x
 while [ $i -le 5 ]
   do
     dhclient -r ens256.$vlanID
-    dhclient ens256.$vlanID -1 -timeout 5
+    dhclient ens256.$vlanID -1 -timeout 5 -v
 
 # Basic ping heartbeat - deprecated.
 #    ping 192.168.1.11 -c 1
@@ -119,7 +119,7 @@ echo This WOC is primary - Monitoring status of backup $(date)
 while [ $j -le 1 ]
   do
     dhclient -r ens256.$vlanID
-    dhclient ens256.$vlanID -1 -timeout 5
+    dhclient ens256.$vlanID -1 -timeout 5 -v
     bstatus=($?)
       if [ $bstatus -eq 0 ]
         then
