@@ -9,7 +9,7 @@ j=0
 #echo "Standby" > /root/wi-oc/woc_status.woc
 
 vlanID=$(sed '2q;d' /root/wi-oc/load_var.woc)
-echo Standby >> woc_status.woc
+echo Standby >> /root/wi-oc/woc_status.woc
 
 
 
