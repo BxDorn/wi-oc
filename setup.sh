@@ -120,7 +120,7 @@ echo "Please provide the VLAN ID number for this WOC (just the number)"
 read vlanID
 echo "VLAN" $vlanID "will be used for the failover network, please ensure it is spanned to all WOC internal"
 echo "(ens224) and failover (ens256) interfaces on both WOCs"
-
+echo $vlanID >> load_var.woc
 #-----------------------------------------------------------------------------------------
 # build ens256
 #-----------------------------------------------------------------------------------------

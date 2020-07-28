@@ -114,14 +114,13 @@ ip link set br0 up
 echo This WOC is primary - Monitoring status of backup $(date) >> $log
 echo This WOC is primary - Monitoring status of backup $(date)
 
-failIface=ens256.$vlanID
 
 # Post userpation monitoring of secondary WOC.
 while [ $j -le 1 ]
   do
-    dhclient -r $failIface
-    dhclient $failIface -1 -timeout 5
-    dhclient -r $failIface
+    dhclient -r ens256.$vlanID
+    dhclient ens256.$vlanID -1 -timeout 5
+    dhclient -r ens256.$vlanID
     bstatus=($?)
       if [ $bstatus -eq 0 ]
         then
@@ -132,7 +131,7 @@ while [ $j -le 1 ]
         else
           j=0
           echo "Primary" > woc_status.woc
-          sleeep 2
+          sleep 2
       fi
   done
 
