@@ -67,10 +67,9 @@ echo "Now lets begin to enter some informaion about the WOC"
 #-----------------------------------------------------------------------------------------
 echo "Please enter a hostname for the WOC"
 read hostname
-hostnamectl $hostname
+hostnamectl set-hostname $hostname
 echo "---------------------------------------------"
-hostnamectl
-echo "Is now the hostname of this unit"
+
 
 echo "Now, lets configure the external interface"
 
