@@ -79,7 +79,7 @@ while [ $i -le 5 ]
          echo This unit is in standby mode
          echo Heartbeat Successful - i = $i -----
          echo --------------------------------------
-         echo "Standby" > woc_status.woc
+#         echo "Standby" > /root/wi-oc/woc_status.woc
          sleep 5
          i=0
       else
@@ -137,7 +137,7 @@ while [ $j -le 1 ]
 echo "Partner unit has usurped as primary, rebooting this unit and entering standby"  >> $log
 echo "Partner unit has usurped as primary, rebooting this unit and entering standby"
 
-#reboot now
+reboot now
 
 exit
 
