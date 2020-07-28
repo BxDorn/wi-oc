@@ -51,9 +51,9 @@ rm -rf woc_status.woc
 echo "Is this unit the primary? y/n (the first WOC you configure is usually the primary and the second WOC is usually the standby)"
 read primaryYn
 if [[ $primaryYn == "y" ]]; then
-    echo Primary >> woc_status.woc
+    echo Primary >> /root/wi-oc/woc_status.woc
 else
-    echo Standby >> woc_status.woc
+    echo Standby >> /root/wi-oc/woc_status.woc
 fi
 
 #-----------------------------------------------------------------------------------------
