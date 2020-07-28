@@ -60,7 +60,19 @@ fi
 # Collect external interface parameters, build dataplane interfaces
 #-----------------------------------------------------------------------------------------
 echo "Now lets begin to enter some informaion about the WOC"
-echo "First, lets configure the external interface"
+
+
+#-----------------------------------------------------------------------------------------
+# Apply hostname
+#-----------------------------------------------------------------------------------------
+echo "Please enter a hostname for the WOC"
+read hostname
+hostnamectl $hostname
+echo "---------------------------------------------"
+hostnamectl
+echo "Is now the hostname of this unit"
+
+echo "Now, lets configure the external interface"
 
 #-----------------------------------------------------------------------------------------
 # IPv6 address
@@ -223,7 +235,6 @@ then
         if [ "$setupInt2Ans" = "y" ]
         then
             echo "Please enter the WAG IPv6 endpoint address"
-            echo "the ipv6 WAG address cannot be abbreviated with :: to hide zeros - enter the full address"
             read wagIpv6
             echo $wagIpv6 >> load_var.woc
         clear
