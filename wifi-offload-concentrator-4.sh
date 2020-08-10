@@ -23,7 +23,7 @@ fi
 
 
 #pull the IPv6 address from the 
-ipv6_wan=$(ip -6 addr show ens192 scope global | egrep -v dynamic | awk '$1 == "inet6" {print $2}' | awk '{print substr($1, 1, length($1)-3)}')
+ipv4_wan=$(ip addr show ens192 | awk '$1 == "inet" {print $2}' | awk '{print substr($1, 1, length($1)-3)}')
 
 #pull wag endpoint from load_var.woc in local dir.
 wagEndpt=$(sed -n '1{p;q;}' /root/wi-oc/load_var.woc)
@@ -32,8 +32,8 @@ wagEndpt=$(sed -n '1{p;q;}' /root/wi-oc/load_var.woc)
 set -x
 
 # create the gre tap and bridge interface:
-#  ip link add BNG1 type ip6gretap remote 2600:6ce6:4403::1 local $ipv6_wan
-  ip link add BNG1 type ip6gretap remote $wagEndpt local $ipv6_wan
+#  ip link add BNG1 type ip6gretap remote 2600:6ce6:4403::1 local $ipv4_wan
+  ip link add BNG1 type ip6gretap remote $wagEndpt local $ipv4_wan
   ip link add name br0 type bridge
 
 # add gretap and ethernet interface (inside) to bridge (br0)
