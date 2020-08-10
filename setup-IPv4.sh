@@ -156,6 +156,18 @@ systemctl restart network.service
 echo "Done! Press any key to continue"
 clear
 
+#-----------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 ls | grep load_var.woc
 firstTime=($?)
@@ -174,7 +186,7 @@ else
         exit
     fi
 fi
-
+ 
 clear
 
 echo "Welcome to the Wireless Offload Concentrator / Tunneling Router setup!"
@@ -211,7 +223,7 @@ then
         echo "-------------------------------------------------------------------------"
         echo "Checking for presence of woc service file"
 
-        ls /etc/systemd/system/ | grep woc.service
+        ls /etc/systemd/system/ | grep woc4.service
         serviceFile=($?)
 
         if [[ $serviceFile -eq "0" ]]; then
@@ -224,9 +236,9 @@ then
                 exit
             else
                 echo "loading service"
-                cp woc.service /etc/systemd/system/
-                chmod +x /etc/systemd/system/woc.service
-                ls /etc/systemd/system/ | grep woc.service
+                cp woc4.service /etc/systemd/system/
+                chmod +x /etc/systemd/system/woc4.service
+                ls /etc/systemd/system/ | grep woc4.service
                 cpStatus=($?)
                 if [[ $cpStatus -eq 0 ]]; then
                     echo "serice file loaded!"
@@ -244,7 +256,7 @@ then
             exit
         else
             echo "enabling woc service"
-            systemctl enable woc.service
+            systemctl enable woc4.service
             sleep 2
             echo "woc service enabled"
             

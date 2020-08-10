@@ -248,7 +248,7 @@ then
         echo "-------------------------------------------------------------------------"
         echo "Checking for presence of woc service file"
 
-        ls /etc/systemd/system/ | grep woc.service
+        ls /etc/systemd/system/ | grep woc6.service
         serviceFile=($?)
 
         if [[ $serviceFile -eq "0" ]]; then
@@ -261,9 +261,9 @@ then
                 exit
             else
                 echo "loading service"
-                cp woc.service /etc/systemd/system/
-                chmod +x /etc/systemd/system/woc.service
-                ls /etc/systemd/system/ | grep woc.service
+                cp woc6.service /etc/systemd/system/
+                chmod +x /etc/systemd/system/woc6.service
+                ls /etc/systemd/system/ | grep woc6.service
                 cpStatus=($?)
                 if [[ $cpStatus -eq 0 ]]; then
                     echo "serice file loaded!"
@@ -281,7 +281,7 @@ then
             exit
         else
             echo "enabling woc service"
-            systemctl enable woc.service
+            systemctl enable woc6.service
             sleep 2
             echo "woc service enabled"
             
