@@ -39,12 +39,7 @@ echo "This will ensure that only vlans 20, 40, and 666 have access to the WOC tu
 echo "you can of course add VLANs later as you see fit"
 echo "by simply adding the vlan to the trunk interface on the switch."
 echo "Press any key to continue..."
-read anykey
-
-echo "The external interface can be dual-stacked with IPv4 and IPv6 addressing, but for the purposes of tunneling,"
-echo "only requires an IPv6 address.The IPv4 address given to this interface is used for the purposes of management"
-echo "and reporting, and is optoinal - though highly recommended. Make sure that ens192 has an IPv4 address before running"
-echo "this script."
+echo "Make sure that ens192 has an IPv4 address before running this script."
 
 rm -rf woc_status.woc
 
@@ -69,9 +64,6 @@ echo "Please enter a hostname for the WOC"
 read hostname
 hostnamectl set-hostname $hostname
 echo "---------------------------------------------"
-
-
-echo "Now, lets configure the external interface"
 
 #-----------------------------------------------------------------------------------------
 # Collect failover interface parameters
@@ -280,6 +272,13 @@ then
         echo "If at any time you need to change these variables re-run the setup script!"
         echo "Press Enter to reboot to apply the new settings"
         read pressEnter
+        crontab -l > cronUpdate
+        echo "*/10 * * * * /usr/bin/sh /root/wi-oc/logwstat.sh"
+        crontab cronUpdate
+        rm cronUpdate
+        crontabl -l
+        sleep 10
+        
         reboot
         else
             echo "please correct any misconfigured interfaces / links and restart the setup script"
