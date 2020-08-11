@@ -54,6 +54,7 @@ set +x
 
 
 
+sleep 20
 
 ## establish counter for HA retries - after 5 attempts the script will trigger a failover.
 while [ $i -le 5 ]
