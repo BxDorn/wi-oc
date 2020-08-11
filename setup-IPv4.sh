@@ -276,7 +276,7 @@ then
         echo "*/10 * * * * /usr/bin/sh /root/wi-oc/logwstat.sh"
         crontab cronUpdate
         rm cronUpdate
-        crontabl -l
+        crontab -l
         sleep 10
         
         reboot
