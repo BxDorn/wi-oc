@@ -33,7 +33,7 @@ set -x
 
 # create the gre tap and bridge interface:
 #  ip link add BNG1 type ip6gretap remote 2600:6ce6:4403::1 local $ipv4_wan
-  ip link add BNG1 type ip6gretap remote $wagEndpt local $ipv4_wan
+  ip link add BNG1 type gretap remote $wagEndpt local $ipv4_wan
   ip link add name br0 type bridge
 
 # add gretap and ethernet interface (inside) to bridge (br0)
