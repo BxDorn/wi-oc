@@ -273,7 +273,7 @@ then
         echo "Press Enter to reboot to apply the new settings"
         read pressEnter
         crontab -l > cronUpdate
-        echo "*/10 * * * * /usr/bin/sh /root/wi-oc/logwstat.sh"
+        echo "*/10 * * * * /usr/bin/sh /root/wi-oc/logwstat.sh" >> cronUpdate
         crontab cronUpdate
         rm cronUpdate
         crontab -l
